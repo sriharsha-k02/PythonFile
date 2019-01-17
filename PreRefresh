@@ -1,0 +1,61 @@
+"""
+----------------------------------------------------------------------
+|				!!!--FOR PRE_DEPLOYMENT--!!!						 |	
+| This program queries from salesforce org and saves data as csv.	 |
+| Extracts data as part of the pre-deployment process.				 |
+| OrgCreds is where queries and credentials are stored			     |	
+----------------------------------------------------------------------
+"""
+
+from salesforce_bulk import SalesforceBulk
+from orgCreds import *
+import unicodecsv 
+import csv
+import time
+
+print("logging into Salesforce")
+
+bulk = SalesforceBulk(username= username,
+                      password= password,
+                      security_token= security_token,
+                      sandbox = sandbox)
+
+print("login Successful")
+
+
+
+for each in lst:
+
+	job = bulk.create_query_job(each[0], contentType='CSV')
+	batch = bulk.query(job, each[1])
+	bulk.close_job(job) 
+	print("Batch Job Created")
+	while not bulk.is_batch_done(batch):
+		time.sleep(10)
+		print("Job In progress...")
+
+	print("Job Completed")
+	print("## Loading into List Started")
+	output_List_of_dict = []
+	rec_check = 0
+
+	for result in bulk.get_all_results_for_query_batch(batch):
+		reader = unicodecsv.DictReader(result, encoding='utf-8')
+		for row in reader:
+			output_List_of_dict.append(dict(row))
+			rec_check=+1
+
+	 
+	print("## Extracting to csv in Progress")    
+	if(rec_check != 0):
+		keys = output_List_of_dict[0].keys()
+
+		with open(each[2], 'w',encoding="utf-8") as output_file:
+			dict_writer = csv.DictWriter(output_file, keys)
+			dict_writer.writeheader()
+			dict_writer.writerows(output_List_of_dict)
+			
+		print("Completed Downloading the {}".format(each[3]))
+	else:
+		print("No Records Exist")
+
