@@ -13,7 +13,7 @@ import unicodecsv
 import csv
 import time
 
-print("logging into Salesforce")
+print("logging into Salesforce ")
 
 bulk = SalesforceBulk(username= username,
                       password= password,
