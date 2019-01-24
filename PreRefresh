@@ -3,7 +3,7 @@
 |				!!!--FOR PRE_DEPLOYMENT--!!!						 |	
 | This program queries from salesforce org and saves data as csv.	 |
 | Extracts data as part of the pre-deployment process.				 |
-| OrgCreds is where queries and credentials are stored			     |	
+| OrgCreds is where queries and credentials are stored.			     |	
 ----------------------------------------------------------------------
 """
 
