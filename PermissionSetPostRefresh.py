@@ -31,10 +31,10 @@ psIds = ','.join(ids)
 
 print("logging into Salesforce")
 
-bulk = SalesforceBulk(username= userName,
-                      password= password,
-                      security_token= security_token,
-                      sandbox = sandbox)
+bulk = SalesforceBulk(username= 'userName',
+                      password= 'password',
+                      security_token= 'security_token',
+                      sandbox = 'sandbox')
 
 print("login Successful")
 
