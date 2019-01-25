@@ -31,10 +31,10 @@ psIds = ','.join(ids)
 
 print("logging into Salesforce")
 
-bulk = SalesforceBulk(username= 'userName',
-                      password= 'password',
-                      security_token= 'security_token',
-                      sandbox = 'sandbox')
+bulk = SalesforceBulk(username= 'sri.harsha.kondabolu@pos.eu.mock120191',
+                      password= 'infy@1234',
+                      security_token= 'fPYit2AXZ7LbUfZD80gQizF3O',
+                      sandbox = True)
 
 print("login Successful")
 
@@ -63,10 +63,25 @@ for result in bulk.get_all_results_for_query_batch(psBatch):
 
 #-----Comparing PS Length-----
 
-if len(ids) == len(psIdList):
+if len(ids) != len(psIdList):
     print('Please use the pre-deploy premissionSetAssignment file for permissionset assignment')
+    exit
 else:
     print('length doesnt match, processing further')
 
-			   
-                                    
+
+idss = list(idSet)
+
+notInIds = []
+notInPsIds = []
+if len(ids) > len(psIdList):
+    for rec in idss:
+        if rec not in psIdList:
+            notInIds.append(rec)
+else:
+    for rec in psIdList:
+        if rec not in idss:
+            notInPsIds.append(rec)
+
+print(notInIds)
+print(notInPsIds)
