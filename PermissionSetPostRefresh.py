@@ -63,25 +63,34 @@ for result in bulk.get_all_results_for_query_batch(psBatch):
 
 #-----Comparing PS Length-----
 
-if len(ids) != len(psIdList):
-    print('Please use the pre-deploy premissionSetAssignment file for permissionset assignment')
-    exit
-else:
-    print('length doesnt match, processing further')
-
-
 idss = list(idSet)
 
-notInIds = []
-notInPsIds = []
-if len(ids) > len(psIdList):
+notInPreData = []
+notInPostData = []
+equalAndNotMatching = []
+
+if len(idss) == len(psIdList):
     for rec in idss:
         if rec not in psIdList:
-            notInIds.append(rec)
+            equalAndNotMatching.append(rec)
+elif len(idss) > len(psIdList):
+    for rec in idss:
+        if rec not in psIdList:
+            notInPreData.append(rec)
 else:
     for rec in psIdList:
         if rec not in idss:
-            notInPsIds.append(rec)
+            notInPostData.append(rec)
 
-print(notInIds)
-print(notInPsIds)
+if len(equalAndNotMatching) == 0:
+    print('Please use the pre-deploy premissionSetAssignment file for permissionset assignment')
+    exit
+else:
+    print('PermissionSets NOT same in pre and post Orgs, Looks Like more work to do :P')
+    if notInPreData:
+        print(The Below are the PermissionSet notin Pre Data Ids)
+        print(notInPreData)
+    elif notInPostData:
+        print(The Below are the PermissionSet notin Post Data Ids)
+        print(notInPostData)
+
